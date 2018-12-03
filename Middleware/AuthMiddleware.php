@@ -7,7 +7,6 @@ use Rudra\ExternalTraits\AuthTrait;
 
 class AuthMiddleware extends WebMiddleware
 {
-
     use AuthTrait;
 
     public function __invoke()
