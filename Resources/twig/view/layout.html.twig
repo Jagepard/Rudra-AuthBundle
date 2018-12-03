@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=0.8">
+
+    <title>Админка :: {{ title }}</title>
+
+    <link rel="shortcut icon" href="{{ constant('APP_URL') }}/assets/auth/framework.ico"/>
+    <link rel="stylesheet" href="{{ constant('APP_URL') }}/assets/auth/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ constant('APP_URL') }}/assets/auth/css/custom.css">
+</head>
+<body>
+<div class="container">
+
+    {% block content %}{% endblock %}
+
+</div>
+</body>
+</html>
