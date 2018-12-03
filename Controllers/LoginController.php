@@ -10,7 +10,6 @@ use App\Auth\Models\Doctrine\Entity\Users as Doctrine;
 
 class LoginController extends AuthController
 {
-
     use CommonHelper;
 
     public function before()
