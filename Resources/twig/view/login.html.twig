@@ -1,0 +1,39 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+
+    <h1 class="form-heading">{{ brand }}</h1>
+    <div class="login-form">
+        <div class="main-div">
+            <div class="panel">
+                <h2>Введите Ваш email и пароль</h2>
+            </div>
+            <hr>
+            <form role="form" method="POST" action="stargate">
+                {{ csrf_field() | raw}}
+                <div class="form-group">
+                    <input type="email" class="form-control" id="name" placeholder="Имя пользователя" value="{{ value('name') }}" name="name">
+                    {{ alert('name', 'warning') | raw }}
+                </div>
+
+                <div class="form-group">
+                    <input type="password" class="form-control" id="pass" placeholder="Пароль" name="pass">
+                    {{ alert('pass', 'warning') | raw }}
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="remember_me"> Запомнить меня
+                    </label>
+                </div>
+
+                <div class="forgot">
+                    <a href="reset.html">Забыли пароль?</a>
+                </div>
+                <button type="submit" class="btn btn-primary">Войти</button>
+            </form>
+        </div>
+
+        <p class="botto-text"> Коротков Данила</p>
+    </div>
+{% endblock %}
