@@ -1,5 +1,5 @@
 {
-    "name"              : "rudra/auth-bundle",
+    "name"              : "rudra-bundle-jagepard/auth",
     "description"       : "AuthBundle",
     "type"              : "zend-module",
     "license"           : "MIT",
