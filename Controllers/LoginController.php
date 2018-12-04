@@ -80,7 +80,7 @@ class LoginController extends AuthController
         $this->validationErrors($validate);
         $this->validationErrors($validate, 'value');
 
-        $this->redirect('stargate');
+        $this->redirect('login');
     }
 
     /**
