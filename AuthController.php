@@ -3,7 +3,7 @@
 namespace App\Auth;
 
 use Rudra\Controller;
-use App\Common\Supports\TwigFunctions;
+use App\Web\Supports\TwigFunctions;
 use Rudra\Interfaces\ContainerInterface;
 
 class AuthController extends Controller
