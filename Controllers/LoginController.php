@@ -3,7 +3,7 @@
 namespace App\Auth\Controllers;
 
 use App\Auth\AuthController;
-use App\Common\Supports\CommonHelper;
+use App\Web\Supports\CommonHelper;
 use App\Auth\Models\PDO\Users as PDO;
 use App\Auth\Models\Eloquent\Users as Eloquent;
 use App\Auth\Models\Doctrine\Entity\Users as Doctrine;
