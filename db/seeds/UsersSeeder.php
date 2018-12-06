@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Phinx\Seed\AbstractSeed;
 
 class UsersSeeder extends AbstractSeed
