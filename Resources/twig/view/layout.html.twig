@@ -2,20 +2,22 @@
 <html lang="ru_RU">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=0.8">
-
-    <title>Админка :: {{ title }}</title>
-
-    <link rel="shortcut icon" href="{{ constant('APP_URL') }}/assets/auth/framework.ico"/>
-    <link rel="stylesheet" href="{{ constant('APP_URL') }}/assets/auth/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ constant('APP_URL') }}/assets/auth/css/custom.css">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Авторизация :: {{ title }}</title>
+    <link rel="stylesheet" type="text/css" href="{{ constant('APP_URL') }}/assets/auth/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ constant('APP_URL') }}/assets/auth/css/my-login.css">
 </head>
-<body>
-<div class="container">
 
-    {% block content %}{% endblock %}
+<body class="my-login-page">
 
-</div>
+    <section class="h-100">
+        <div class="container h-100">
+            {% block content %}{% endblock %}
+        </div>
+    </section>
+
+    <script src="{{ constant('APP_URL') }}/assets/auth/js/jquery.min.js"></script>
+    <script src="{{ constant('APP_URL') }}/assets/auth/bootstrap/js/bootstrap.min.js"></script>
+    <script src="{{ constant('APP_URL') }}/assets/auth/js/my-login.js"></script>
 </body>
 </html>
