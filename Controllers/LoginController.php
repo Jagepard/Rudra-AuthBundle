@@ -52,28 +52,27 @@ class LoginController extends AuthController
     {
         $validate = [
             'csrf_field' => $this->validation()->sanitize($this->post('csrf_field'))->csrf()->run(),
-            'name'       => $this->validation()->sanitize($this->post('name'))->required('Заполните поле :: Имя пользователя')->run(),
-            'pass'       => $this->validation()->sanitize($this->post('pass'))->required('Заполните пароль')->run()
+            'email'      => $this->validation()->sanitize($this->post('email'))->required('Заполните поле :: Имя пользователя')->run(),
+            'password'   => $this->validation()->sanitize($this->post('password'))->required('Заполните пароль')->run()
         ];
 
         if ($this->validation()->access($validate)) {
-            $pass = '';
+            $user = [];
             $res  = $this->validation()->get($validate, ['csrf_field']);
 
             switch ($this->container()->config('database', 'active')) {
                 case 'pdo':
-                    $pass = $this->model()->getUser($res['name'])->password;
+                    $user = $this->model()->getUser($res['email']);
                     break;
                 case 'doctrine':
-                    $pass = $this->model()->findOneByEmail($res['name'])->getPassword();
+                    $user = $this->model()->findOneByEmail($res['email']);
                     break;
                 case 'eloquent':
-                    $pass = Eloquent::find($res['name'])->first();
+                    $user = Eloquent::find($res['email'])->first();
                     break;
             }
 
-//            $this->login($res['pass'], ['id' => $user->id, 'password' => $user->password]);
-            $this->login($res['pass'], $pass);
+            $this->login($res['password'], $user, '');
             return;
         }
 
