@@ -14,8 +14,8 @@
                         {{ csrf_field() | raw}}
                         <div class="form-group">
                             <label for="email">Введите Ваш email</label>
-                            <input id="email" type="email" class="form-control" placeholder="Имя пользователя" value="{{ value('name') }}" required autofocus>
-                            {{ alert('name', 'warning') | raw }}
+                            <input id="email" type="email" class="form-control" name="email" placeholder="Имя пользователя" value="{{ value('name') }}" required autofocus>
+                            {{ alert('email', 'warning') | raw }}
                             <div class="invalid-feedback">
                                 Email неверный
                             </div>
@@ -27,8 +27,8 @@
                                     Забыли пароль?
                                 </a>
                             </label>
-                            <input id="password" type="password" class="form-control" placeholder="Пароль" name="pass" required data-eye>
-                            {{ alert('pass', 'warning') | raw }}
+                            <input id="password" type="password" class="form-control" placeholder="Пароль" name="password" required data-eye>
+                            {{ alert('password', 'warning') | raw }}
                             <div class="invalid-feedback">
                                 Необходим пароль
                             </div>
