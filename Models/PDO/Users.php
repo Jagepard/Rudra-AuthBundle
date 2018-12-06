@@ -14,6 +14,6 @@ class Users extends Model
             ':name' => $name,
         ]);
 
-        return $users->fetchObject();
+        return $users->fetch(\PDO::FETCH_ASSOC);;
     }
 }
