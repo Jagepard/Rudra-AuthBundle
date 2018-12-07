@@ -3,5 +3,7 @@
 return [
     'login'       => ['LoginController'],
     'login::POST' => ['LoginController', 'actionLogin'],
-    'logout'      => ['LoginController', 'actionLogout']
+    'logout'      => ['LoginController', 'actionLogout'],
+
+    'register' => ['RegisterController'],
 ];
