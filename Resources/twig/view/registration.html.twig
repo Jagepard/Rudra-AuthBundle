@@ -1,0 +1,65 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+
+    <div class="row justify-content-md-center h-100">
+        <div class="card-wrapper">
+            <div class="brand">
+                <img src="{{ constant('APP_URL') }}/assets/auth/img/rudra.png" alt="bootstrap 4 login page">
+            </div>
+            <div class="card fat">
+                <div class="card-body">
+                    <h4 class="card-title">{{ brand }}</h4>
+                    <form method="POST" class="my-login-validation" novalidate="">
+                        <div class="form-group">
+                            <label for="name">Укажите Ваше имя</label>
+                            <input id="name" type="text" class="form-control" name="name" placeholder="Имя пользователя" required autofocus>
+                            <div class="invalid-feedback">
+                                Укажите ваше имя
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Введите Ваш email</label>
+                            <input id="email" type="email" class="form-control" name="email" placeholder="Почта" required>
+                            <div class="invalid-feedback">
+                                Email неверный
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Введите Ваш пароль</label>
+                            <input id="password" type="password" class="form-control" name="password" placeholder="Пароль" required data-eye>
+                            <div class="invalid-feedback">
+                                Необходим пароль
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="custom-checkbox custom-control">
+                                <input type="checkbox" name="agree" id="agree" class="custom-control-input" required="">
+                                <label for="agree" class="custom-control-label">Я принимаю <a href="#">Правила Пользования</a></label>
+                                <div class="invalid-feedback">
+                                    Вы должны принять правиля пользования
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group m-0">
+                            <button type="submit" class="btn btn-primary btn-block">
+                                Зарегистрироваться
+                            </button>
+                        </div>
+                        <div class="mt-4 text-center">
+                            Уже зарегистрированы? <a href="{{ constant('APP_URL') }}/login">Войти</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="footer">
+                Copyright &copy; 2018 &mdash; Коротков Данила
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
