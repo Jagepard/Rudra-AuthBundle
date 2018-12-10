@@ -17,6 +17,7 @@ class UsersSeeder extends AbstractSeed
     public function run()
     {
         $this->insert('users', [
+            'name'       => 'Admin',
             'email'      => 'admin@admin.com',
             'password'   => '$2y$10$IgxFxFx5RLWmST9H6THQ/eCWT71mZgGwN.PeABJ0vHimQnrqyjAWS',
             'role'       => 1,
