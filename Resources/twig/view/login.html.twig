@@ -15,7 +15,6 @@
                         <div class="form-group">
                             <label for="email">Введите Ваш email</label>
                             <input id="email" type="email" class="form-control" name="email" placeholder="Почта" value="{{ value('name') }}" required autofocus>
-                            {{ alert('email', 'warning') | raw }}
                             <div class="invalid-feedback">
                                 Email неверный
                             </div>
@@ -28,12 +27,13 @@
                                 </a>
                             </label>
                             <input id="password" type="password" class="form-control" placeholder="Пароль" name="password" required data-eye>
-                            {{ alert('password', 'warning') | raw }}
                             <div class="invalid-feedback">
                                 Необходим пароль
                             </div>
                         </div>
-
+                        {{ alert('email', 'warning') | raw }}
+                        {{ alert('password', 'warning') | raw }}
+                        {{ alert('success', 'success') | raw }}
                         <div class="form-group">
                             <div class="custom-checkbox custom-control">
                                 <input type="checkbox" name="remember_me" id="remember" class="custom-control-input">
@@ -46,6 +46,7 @@
                                 Авторизация
                             </button>
                         </div>
+
                         <div class="mt-4 text-center">
                             Еще не зарегистрированы? <a href="{{ constant('APP_URL') }}/register">Регистрация</a>
                         </div>
