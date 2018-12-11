@@ -10,7 +10,8 @@
             <div class="card fat">
                 <div class="card-body">
                     <h4 class="card-title">{{ brand }}</h4>
-                    <form method="POST" class="my-login-validation" novalidate="">
+                    <form method="POST" class="my-login-validation" action="register" novalidate="">
+                        {{ csrf_field() | raw}}
                         <div class="form-group">
                             <label for="name">Укажите Ваше имя</label>
                             <input id="name" type="text" class="form-control" name="name" placeholder="Имя пользователя" required autofocus>
@@ -34,7 +35,12 @@
                                 Необходим пароль
                             </div>
                         </div>
+                        {{ alert('name', 'warning') | raw }}
+                        {{ alert('email', 'warning') | raw }}
+                        {{ alert('password', 'warning') | raw }}
 
+                        {{ alert('agree', 'danger') | raw }}
+                        {{ alert('unique', 'warning') | raw }}
                         <div class="form-group">
                             <div class="custom-checkbox custom-control">
                                 <input type="checkbox" name="agree" id="agree" class="custom-control-input" required="">
