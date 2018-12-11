@@ -52,8 +52,10 @@ class LoginController extends AuthController
     {
         $validate = [
             'csrf_field' => $this->validation()->sanitize($this->post('csrf_field'))->csrf()->run(),
-            'email'      => $this->validation()->sanitize($this->post('email'))->required('Заполните поле :: Имя пользователя')->run(),
-            'password'   => $this->validation()->sanitize($this->post('password'))->required('Заполните пароль')->run()
+            'email'      => $this->validation()->email($this->post('email'), " :: email")->required('Заполните поле :: Email')->run(),
+            'password'   => $this->validation()->sanitize($this->post('password'))
+                ->minLength(5)->maxLength(20)
+                ->required('Заполните пароль')->run()
         ];
 
         if ($this->validation()->access($validate)) {
@@ -77,8 +79,6 @@ class LoginController extends AuthController
         }
 
         $this->validationErrors($validate);
-        $this->validationErrors($validate, 'value');
-
         $this->redirect('login');
     }
 
