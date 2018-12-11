@@ -3,9 +3,25 @@
 namespace App\Auth\Controllers;
 
 use App\Auth\AuthController;
+use App\Auth\Models\PDO\Users as PDO;
+use App\Auth\Models\Eloquent\Users as Eloquent;
+use App\Auth\Models\Doctrine\Entity\Users as Doctrine;
 
 class RegisterController extends AuthController
 {
+
+    public function before()
+    {
+        switch ($this->container()->config('database', 'active')) {
+            case 'pdo':
+                $this->setModel(PDO::class);
+                break;
+            case 'doctrine':
+                $this->model = $this->db()->getRepository(Doctrine::class);
+                break;
+        }
+    }
+
     /**
      * @Routing(url = 'register')
      * @AfterMiddleware(name = 'UnsetSession')
@@ -30,15 +46,32 @@ class RegisterController extends AuthController
             'password'   => $this->validation()->sanitize($this->post('password'))->required('Заполните пароль')->run()
         ];
 
-        dd($validate);
+        /* Если установлен флаг remember_me */
+        if ($this->container()->hasPost('agree')) {
+            if ($this->validation()->access($validate)) {
+                $res  = $this->validation()->get($validate, ['csrf_field']);
+                $res['password'] = $this->bcrypt($res['password']);
 
-        if ($this->validation()->access($validate)) {
+                switch ($this->container()->config('database', 'active')) {
+                    case 'pdo':
+                        $this->model()->create($res);
+                        break;
+                    case 'doctrine':
+                        $user = $this->model()->findOneByEmail($res['email']);
+                        break;
+                    case 'eloquent':
+                        $user = Eloquent::find($res['email'])->first();
+                        break;
+                }
 
+                $this->redirect('login');
+                return;
+            }
+
+            $this->validationErrors($validate);
+            $this->validationErrors($validate, 'value');
+
+            $this->redirect('login');
         }
-
-        $this->validationErrors($validate);
-        $this->validationErrors($validate, 'value');
-
-        $this->redirect('login');
     }
 }
