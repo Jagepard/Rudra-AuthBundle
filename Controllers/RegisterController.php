@@ -3,12 +3,14 @@
 namespace App\Auth\Controllers;
 
 use App\Auth\AuthController;
+use App\Web\Supports\CommonHelper;
 use App\Auth\Models\PDO\Users as PDO;
 use App\Auth\Models\Eloquent\Users as Eloquent;
 use App\Auth\Models\Doctrine\Entity\Users as Doctrine;
 
 class RegisterController extends AuthController
 {
+    use CommonHelper;
 
     public function before()
     {
@@ -41,9 +43,15 @@ class RegisterController extends AuthController
     {
         $validate = [
             'csrf_field' => $this->validation()->sanitize($this->post('csrf_field'))->csrf()->run(),
-            'name'       => $this->validation()->sanitize($this->post('email'))->required('Заполните поле :: Имя пользователя')->run(),
-            'email'      => $this->validation()->sanitize($this->post('email'))->required('Заполните поле :: Email')->run(),
-            'password'   => $this->validation()->sanitize($this->post('password'))->required('Заполните пароль')->run()
+            'name'       => $this->validation()
+                ->sanitize($this->post('name'))
+                ->minLength(5)->maxLength(30)
+                ->required('Заполните поле :: Имя пользователя')->run(),
+            'email'      => $this->validation()->email($this->post('email'))->required('Заполните поле :: Email')->run(),
+            'password'   => $this->validation()
+                ->sanitize($this->post('password'))
+                ->minLength(5)->maxLength(20)
+                ->required('Заполните пароль')->run()
         ];
 
         /* Если установлен флаг remember_me */
@@ -54,14 +62,19 @@ class RegisterController extends AuthController
 
                 switch ($this->container()->config('database', 'active')) {
                     case 'pdo':
+                        if ($this->model()->getUser($res['email'])) {
+                            $this->setSession('alert', 'Пользователь с таким Email уже есть', 'unique');
+                            $this->redirect('register');
+                        }
+
                         $this->model()->create($res);
                         break;
-                    case 'doctrine':
-                        $user = $this->model()->findOneByEmail($res['email']);
-                        break;
-                    case 'eloquent':
-                        $user = Eloquent::find($res['email'])->first();
-                        break;
+//                    case 'doctrine':
+//                        $user = $this->model()->findOneByEmail($res['email']);
+//                        break;
+//                    case 'eloquent':
+//                        $user = Eloquent::find($res['email'])->first();
+//                        break;
                 }
 
                 $this->redirect('login');
@@ -69,9 +82,10 @@ class RegisterController extends AuthController
             }
 
             $this->validationErrors($validate);
-            $this->validationErrors($validate, 'value');
-
-            $this->redirect('login');
+            $this->redirect('register');
         }
+
+        $this->setSession('alert', 'Вы не согласились с правилами ресурса', 'agree');
+        $this->redirect('register');
     }
 }
