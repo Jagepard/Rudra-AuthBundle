@@ -5,5 +5,6 @@ return [
     'login::POST' => ['LoginController', 'actionLogin'],
     'logout'      => ['LoginController', 'actionLogout'],
 
-    'register' => ['RegisterController'],
+    'register'       => ['RegisterController'],
+    'register::POST' => ['RegisterController', 'actionRegister'],
 ];
