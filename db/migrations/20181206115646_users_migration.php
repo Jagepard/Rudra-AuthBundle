@@ -32,7 +32,9 @@ class UsersMigration extends AbstractMigration
         $users->addColumn('name', 'string', ['limit' => 255])
             ->addColumn('email', 'string', ['limit' => 255])
             ->addColumn('password', 'string', ['limit' => 255])
-            ->addColumn('role', 'string', ['limit' => 255])
+            ->addColumn('status', 'int', ['limit' => 1])
+            ->addColumn('role', 'int', ['limit' => 1])
+            ->addColumn('activate', 'string', ['limit' => 255])
             ->addColumn('created_at', 'datetime')
             ->create();
     }
