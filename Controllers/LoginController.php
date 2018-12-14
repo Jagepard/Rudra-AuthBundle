@@ -10,6 +10,7 @@ use App\Auth\Models\Doctrine\Entity\Users as Doctrine;
 
 class LoginController extends AuthController
 {
+
     use CommonHelper;
 
     public function before()
@@ -52,7 +53,7 @@ class LoginController extends AuthController
     {
         $validate = [
             'csrf_field' => $this->validation()->sanitize($this->post('csrf_field'))->csrf()->run(),
-            'email'      => $this->validation()->email($this->post('email'), " :: email")->required('Заполните поле :: Email')->run(),
+            'email'      => $this->validation()->email($this->post('email'))->run(),
             'password'   => $this->validation()->sanitize($this->post('password'))
                 ->minLength(5)->maxLength(20)
                 ->required('Заполните пароль')->run()

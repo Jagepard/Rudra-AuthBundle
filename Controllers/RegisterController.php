@@ -47,7 +47,7 @@ class RegisterController extends AuthController
                 ->sanitize($this->post('name'))
                 ->minLength(5)->maxLength(30)
                 ->required('Заполните поле :: Имя пользователя')->run(),
-            'email'      => $this->validation()->email($this->post('email'))->required('Заполните поле :: Email')->run(),
+            'email'      => $this->validation()->email($this->post('email'))->run(),
             'password'   => $this->validation()
                 ->sanitize($this->post('password'))
                 ->minLength(5)->maxLength(20)
@@ -57,8 +57,9 @@ class RegisterController extends AuthController
         /* Если установлен флаг remember_me */
         if ($this->container()->hasPost('agree')) {
             if ($this->validation()->access($validate)) {
-                $res  = $this->validation()->get($validate, ['csrf_field']);
+                $res             = $this->validation()->get($validate, ['csrf_field']);
                 $res['password'] = $this->bcrypt($res['password']);
+                $res['activate'] = md5($this->randomString());
 
                 switch ($this->container()->config('database', 'active')) {
                     case 'pdo':
@@ -68,6 +69,7 @@ class RegisterController extends AuthController
                         }
 
                         $this->model()->create($res);
+                        $this->sendMail($res['email'], $res['activate']);
                         break;
 //                    case 'doctrine':
 //                        $user = $this->model()->findOneByEmail($res['email']);
