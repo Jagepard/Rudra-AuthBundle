@@ -3,26 +3,10 @@
 namespace App\Auth\Controllers;
 
 use App\Auth\AuthController;
-use App\Web\Supports\CommonHelper;
-use App\Auth\Models\PDO\Users as PDO;
 use App\Auth\Models\Eloquent\Users as Eloquent;
-use App\Auth\Models\Doctrine\Entity\Users as Doctrine;
 
 class RegisterController extends AuthController
 {
-    use CommonHelper;
-
-    public function before()
-    {
-        switch ($this->container()->config('database', 'active')) {
-            case 'pdo':
-                $this->setModel(PDO::class);
-                break;
-            case 'doctrine':
-                $this->model = $this->db()->getRepository(Doctrine::class);
-                break;
-        }
-    }
 
     /**
      * @Routing(url = 'register')
