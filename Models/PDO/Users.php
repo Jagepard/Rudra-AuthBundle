@@ -25,6 +25,58 @@ class Users extends Model
         $this->setSession('alert', 'Подтвердите почтовый адрес', 'main');
     }
 
+    public function updateActivate(array $res)
+    {
+        $query = $this->db()->prepare("
+                UPDATE `users` SET 
+                activate = :activate, 
+                status   = :status
+                WHERE `email` = :email");
+
+        $query->execute([
+            ':activate' => $res['activate'],
+            ':status'   => '0',
+            ':email'    => $res['email'],
+        ]);
+
+        $this->setSession('alert', 'Ссылка отправлена', 'success');
+        $this->setSession('alert', 'Перейдите по ссылке', 'main');
+    }
+
+    public function updatePassword(array $res)
+    {
+        $query = $this->db()->prepare("
+                UPDATE `users` SET 
+                password = :password, 
+                status   = :status
+                WHERE `email` = :email");
+
+        $query->execute([
+            ':password' => $res['password'],
+            ':status'   => '1',
+            ':email'    => $res['email'],
+        ]);
+
+        $this->setSession('alert', 'Ссылка отправлена', 'success');
+        $this->setSession('alert', 'Перейдите по ссылке', 'main');
+    }
+
+    /**
+     * @param string $email
+     */
+    public function updateStatus(string $email)
+    {
+        $query = $this->db()->prepare("
+                UPDATE `users` SET 
+                status = :status
+                WHERE `email` = :email");
+
+        $query->execute([
+            ':status' => '1',
+            ':email'  => $email,
+        ]);
+    }
+
     protected function createRow(array $res)
     {
         $query = $this->db()->prepare("               
