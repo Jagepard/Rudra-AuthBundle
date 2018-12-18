@@ -1,0 +1,43 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+
+    <div class="row justify-content-md-center align-items-center h-100">
+        <div class="card-wrapper">
+            <div class="brand">
+                <img src="{{ constant('APP_URL') }}/assets/auth/img/rudra.png" alt="logo">
+            </div>
+            <div class="card fat">
+                <div class="card-body">
+                    <h4 class="card-title">{{ brand }}</h4>
+                    <form method="POST" class="my-login-validation" novalidate="" action="forgot">
+                        {{ csrf_field() | raw}}
+                        <div class="form-group">
+                            <label for="email">Введите Ваш emai</label>
+                            <input id="email" type="email" class="form-control" name="email" value="{{ value('name') }}" required autofocus>
+                            <div class="invalid-feedback">
+                                Email неверный
+                            </div>
+                            <div class="form-text text-muted">
+                                При нажатии "Сбросить пароль" будет отправлена ссылка на ваш Email
+                            </div>
+                        </div>
+                        {{ alert('main', 'warning') | raw }}
+                        {{ alert('email', 'warning') | raw }}
+                        {{ alert('password', 'warning') | raw }}
+                        {{ alert('success', 'success') | raw }}
+                        <div class="form-group m-0">
+                            <button type="submit" class="btn btn-primary btn-block">
+                                Сбросить пароль
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="footer">
+                Copyright &copy; 2018 &mdash; Коротков Данила
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
