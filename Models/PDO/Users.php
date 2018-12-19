@@ -9,20 +9,18 @@ class Users extends Model
 
     public function getUser(string $name)
     {
-        $users = $this->db()->prepare('SELECT * FROM users WHERE `email` = :name');
+        $user = $this->db()->prepare('SELECT * FROM users WHERE `email` = :name');
+        $user->execute([':name' => $name]);
+        $user = $user->fetch(\PDO::FETCH_ASSOC);
 
-        $users->execute([
-            ':name' => $name,
-        ]);
-
-        return $users->fetch(\PDO::FETCH_ASSOC);
+        return $user;
     }
 
     public function create(array $res)
     {
         $this->createRow($res);
         $this->setSession('alert', 'Данные добавлены', 'success');
-        $this->setSession('alert', 'Подтвердите почтовый адрес', 'main');
+        $this->setSession('alert', 'Подтвердите почтовый адрес', 'info');
     }
 
     public function updateActivate(array $res)
@@ -30,30 +28,26 @@ class Users extends Model
         $query = $this->db()->prepare("
                 UPDATE `users` SET 
                 activate = :activate, 
-                status   = :status
                 WHERE `email` = :email");
 
         $query->execute([
             ':activate' => $res['activate'],
-            ':status'   => '0',
             ':email'    => $res['email'],
         ]);
 
         $this->setSession('alert', 'Ссылка отправлена', 'success');
-        $this->setSession('alert', 'Перейдите по ссылке', 'main');
+        $this->setSession('alert', 'Перейдите по ссылке', 'info');
     }
 
     public function updatePassword(array $res)
     {
         $query = $this->db()->prepare("
                 UPDATE `users` SET 
-                password = :password, 
-                status   = :status
+                password = :password
                 WHERE `email` = :email");
 
         $query->execute([
             ':password' => $res['password'],
-            ':status'   => '1',
             ':email'    => $res['email'],
         ]);
 
