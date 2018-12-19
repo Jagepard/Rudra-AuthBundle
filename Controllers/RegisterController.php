@@ -16,7 +16,7 @@ class RegisterController extends AuthController
     {
         $this->twig('registration', [
             'title' => 'Регистрация',
-            'brand' => 'AuthBundle'
+            'brand' => 'Регистрация'
         ]);
     }
 
@@ -29,42 +29,23 @@ class RegisterController extends AuthController
             'csrf_field' => $this->validation()->sanitize($this->post('csrf_field'))->csrf()->run(),
             'name'       => $this->validation()
                 ->sanitize($this->post('name'))
-                ->minLength(5)->maxLength(30)
-                ->required('Заполните поле :: Имя пользователя')->run(),
-            'email'      => $this->validation()->email($this->post('email'))->run(),
+                ->minLength(5, 'Имя пользователя слишком мало')->maxLength(30, 'Имя пользователя слишком длинное')->run(),
+            'email'      => $this->validation()->email($this->post('email'), 'Почта указана неверно')->run(),
             'password'   => $this->validation()
                 ->sanitize($this->post('password'))
-                ->minLength(5)->maxLength(20)
-                ->required('Заполните пароль')->run()
+                ->minLength(5, 'Пароль слишком мал')->maxLength(20, 'Пароль слишком большой')->run()
         ];
 
-        /* Если установлен флаг remember_me */
+        /* Если установлен флаг agree */
         if ($this->container()->hasPost('agree')) {
             if ($this->validation()->access($validate)) {
-                $res             = $this->validation()->get($validate, ['csrf_field']);
-                $res['password'] = $this->bcrypt($res['password']);
-                $res['activate'] = md5($this->randomString());
+                $data             = $this->validation()->get($validate, ['csrf_field']);
+                $data['password'] = $this->bcrypt($data['password']);
+                $data['activate'] = md5($this->randomString());
 
-                switch ($this->container()->config('database', 'active')) {
-                    case 'pdo':
-                        if ($this->model()->getUser($res['email'])) {
-                            $this->setSession('alert', 'Пользователь с таким Email уже есть', 'unique');
-                            $this->redirect('register');
-                        }
-
-                        $this->model()->create($res);
-                        $this->sendMail($res['email'], $res['activate']);
-                        break;
-//                    case 'doctrine':
-//                        $user = $this->model()->findOneByEmail($res['email']);
-//                        break;
-//                    case 'eloquent':
-//                        $user = Eloquent::find($res['email'])->first();
-//                        break;
-                }
-
+                $this->switchModel($this->container()->config('database', 'active'), $data);
+                $this->sendMail($data['email'], $data['activate']);
                 $this->redirect('login');
-                return;
             }
 
             $this->validationErrors($validate);
@@ -73,5 +54,25 @@ class RegisterController extends AuthController
 
         $this->setSession('alert', 'Вы не согласились с правилами ресурса', 'agree');
         $this->redirect('register');
+    }
+
+    protected function switchModel(string $driver, array $data): void
+    {
+        switch ($driver) {
+            case 'pdo':
+                if ($this->model()->getUser($data['email'])) {
+                    $this->setSession('alert', 'Пользователь с таким Email уже есть', 'unique');
+                    $this->redirect('register');
+                }
+
+                $this->model()->create($data);
+                break;
+//                    case 'doctrine':
+//                        $user = $this->model()->findOneByEmail($res['email']);
+//                        break;
+//                    case 'eloquent':
+//                        $user = Eloquent::find($res['email'])->first();
+//                        break;
+        }
     }
 }
