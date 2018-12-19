@@ -13,9 +13,10 @@ class ActivateController extends AuthController
     public function actionActivate($params)
     {
         $user = $this->model()->getUser($params['email']);
+        $this->notRegistered($user);
 
         if ($user['status'] == '1') {
-            $this->setSession('alert', $user['email'] . ' - уже активирован', 'main');
+            $this->setSession('alert', 'Email уже активирован', 'info');
             $this->redirect('login');
         }
 
@@ -25,7 +26,7 @@ class ActivateController extends AuthController
             $this->redirect('login');
         }
 
-        $this->setSession('alert', 'Ссылка неверна', 'main');
+        $this->setSession('alert', 'Ссылка неверна', 'error');
         $this->redirect('login');
     }
 }
