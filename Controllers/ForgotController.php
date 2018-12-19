@@ -14,7 +14,7 @@ class ForgotController extends AuthController
     {
         $this->twig('forgot', [
             'title' => 'Восстановление пароля',
-            'brand' => 'AuthBundle'
+            'brand' => 'Восстановление пароля'
         ]);
     }
 
@@ -29,27 +29,30 @@ class ForgotController extends AuthController
         ];
 
         if ($this->validation()->access($validate)) {
-            $res             = $this->validation()->get($validate, ['csrf_field']);
-            $res['activate'] = md5($this->randomString());
+            $data             = $this->validation()->get($validate, ['csrf_field']);
+            $data['activate'] = md5($this->randomString());
 
-            switch ($this->container()->config('database', 'active')) {
-                case 'pdo':
-                    $this->model()->updateActivate($res);
-                    $this->sendMail($res['email'], $res['activate'], 1);
-                    break;
-//                    case 'doctrine':
-//                        $user = $this->model()->findOneByEmail($res['email']);
-//                        break;
-//                    case 'eloquent':
-//                        $user = Eloquent::find($res['email'])->first();
-//                        break;
-            }
-
+            $this->switchModel($this->container()->config('database', 'active'), $data);
             $this->redirect('login');
-            return;
         }
 
         $this->validationErrors($validate);
         $this->redirect('forgot');
+    }
+
+    protected function switchModel(string $driver, array $data): void
+    {
+        switch ($driver) {
+            case 'pdo':
+                $this->model()->updateActivate($data);
+                $this->sendMail($data['email'], $data['activate'], 1);
+                break;
+//                    case 'doctrine':
+//                        $user = $this->model()->findOneByEmail($data['email']);
+//                        break;
+//                    case 'eloquent':
+//                        $user = Eloquent::find($data['email'])->first();
+//                        break;
+        }
     }
 }

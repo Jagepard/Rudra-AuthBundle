@@ -25,7 +25,7 @@ class LoginController extends AuthController
     {
         $this->twig('login', [
             'title' => 'Авторизация',
-            'brand' => 'AuthBundle'
+            'brand' => 'Авторизация'
         ]);
     }
 
@@ -36,30 +36,15 @@ class LoginController extends AuthController
     {
         $validate = [
             'csrf_field' => $this->validation()->sanitize($this->post('csrf_field'))->csrf()->run(),
-            'email'      => $this->validation()->email($this->post('email'))->run(),
+            'email'      => $this->validation()->email($this->post('email'), 'Почта указана неверно')->run(),
             'password'   => $this->validation()->sanitize($this->post('password'))
-                ->minLength(5)->maxLength(20)
-                ->required('Заполните пароль')->run()
+                ->minLength(5, 'Пароль слишком мал')->maxLength(20, 'Пароль слишком большой')->run()
         ];
 
         if ($this->validation()->access($validate)) {
-            $user = [];
-            $res  = $this->validation()->get($validate, ['csrf_field']);
-
-            switch ($this->container()->config('database', 'active')) {
-                case 'pdo':
-                    $user = $this->model()->getUser($res['email']);
-                    break;
-                case 'doctrine':
-                    $user = $this->model()->findOneByEmail($res['email']);
-                    break;
-                case 'eloquent':
-                    $user = Eloquent::find($res['email'])->first();
-                    break;
-            }
-
-            $this->login($res['password'], $user, '');
-            return;
+            $data = $this->validation()->get($validate, ['csrf_field']);
+            $user = $this->switchModel($this->container()->config('database', 'active'), $data);
+            $this->login($data['password'], $user, '');
         }
 
         $this->validationErrors($validate);
@@ -72,5 +57,23 @@ class LoginController extends AuthController
     public function actionLogout()
     {
         $this->logout();
+    }
+
+    protected function switchModel(string $driver, array $data): array
+    {
+        switch ($driver) {
+            case 'pdo':
+                $user = $this->model()->getUser($data['email']);
+                $this->notRegistered($user);
+                break;
+            case 'doctrine':
+                $user = $this->model()->findOneByEmail($data['email']);
+                break;
+            case 'eloquent':
+                $user = Eloquent::find($data['email'])->first();
+                break;
+        }
+
+        return $user;
     }
 }

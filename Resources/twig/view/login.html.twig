@@ -31,10 +31,13 @@
                                 Необходим пароль
                             </div>
                         </div>
-                        {{ alert('main', 'warning') | raw }}
+                        {{ alert('info', 'info') | raw }}
+                        {{ alert('not-registered', 'danger') | raw }}
+                        {{ alert('error', 'danger') | raw }}
+                        {{ alert('success', 'success') | raw }}
+
                         {{ alert('email', 'warning') | raw }}
                         {{ alert('password', 'warning') | raw }}
-                        {{ alert('success', 'success') | raw }}
                         <div class="form-group">
                             <div class="custom-checkbox custom-control">
                                 <input type="checkbox" name="remember_me" id="remember" class="custom-control-input">
