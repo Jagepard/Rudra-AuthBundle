@@ -32,7 +32,7 @@ class AuthController extends Controller
         }
     }
 
-    protected function sendMail(string $to, string $activate, string $reset = null)
+    protected function sendMail(string $to, string $activate, string $reset = null): void
     {
         $text['title'] = ($reset == null) ? 'Подтвердите почту ' : 'Сбросить пароль ';
         $text['link']  = ($reset == null) ? '/activate/' : '/reset/';
@@ -45,7 +45,7 @@ class AuthController extends Controller
         $this->container()->get('mailer')->send($message);
     }
 
-    protected function randomString($type = 'alnum', $len = 8)
+    protected function randomString($type = 'alnum', $len = 8): string
     {
         switch ($type) {
             case 'alpha'    :
@@ -66,6 +66,15 @@ class AuthController extends Controller
         for ($i = 0; $i < $len; $i++) {
             $str .= substr($pool, mt_rand(0, strlen($pool) - 1), 1);
         }
+
         return $str;
+    }
+
+    protected function notRegistered($user): void
+    {
+        if (!$user) {
+            $this->setSession('alert', 'Email не зарегистрирован', 'not-registered');
+            $this->redirect('login');
+        }
     }
 }
