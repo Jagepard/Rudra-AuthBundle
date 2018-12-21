@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Auth\Controllers;
+namespace App\Auth\Controllers\PDO;
 
 use App\Auth\AuthController;
 

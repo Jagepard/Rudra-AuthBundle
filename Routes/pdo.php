@@ -1,14 +1,14 @@
 <?php
 
 return [
-    'login'                  => ['LoginController'],
-    'login::POST'            => ['LoginController', 'actionLogin'],
-    'logout'                 => ['LoginController', 'actionLogout'],
-    'register'               => ['RegisterController'],
-    'register::POST'         => ['RegisterController', 'actionRegister'],
-    'activate/{email}/{md5}' => ['ActivateController', 'actionActivate'],
-    'forgot'                 => ['ForgotController'],
-    'forgot::POST'           => ['ForgotController', 'actionForgot'],
-    'reset/{email}/{md5}'    => ['ResetController'],
-    'reset::POST'            => ['ResetController', 'actionReset'],
+    'login'                  => ['PDO\LoginController'],
+    'login::POST'            => ['PDO\LoginController', 'actionLogin'],
+    'logout'                 => ['PDO\LoginController', 'actionLogout'],
+    'register'               => ['PDO\RegisterController'],
+    'register::POST'         => ['PDO\RegisterController', 'actionRegister'],
+    'activate/{email}/{md5}' => ['PDO\ActivateController', 'actionActivate'],
+    'forgot'                 => ['PDO\ForgotController'],
+    'forgot::POST'           => ['PDO\ForgotController', 'actionForgot'],
+    'reset/{email}/{md5}'    => ['PDO\ResetController'],
+    'reset::POST'            => ['PDO\ResetController', 'actionReset'],
 ];
