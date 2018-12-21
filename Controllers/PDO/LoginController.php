@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Auth\Controllers;
+namespace App\Auth\Controllers\PDO;
 
 use App\Auth\AuthController;
 use App\Auth\Models\Eloquent\Users as Eloquent;
@@ -12,7 +12,7 @@ class LoginController extends AuthController
      * @Routing(url = 'login')
      * @AfterMiddleware(name = 'UnsetSession')
      *
-     * php vendor/bin/doctrine orm:convert-mapping --namespace="App\\Auth\\Models\\Doctrine\\Entity\\" --force  --from-database annotation ./
+     * php vendor/bin/doctrine orm:convert-mapping --namespace="app\\auth\\Models\\Doctrine\\Entity\\" --force  --from-database annotation ./
      * php vendor/bin/doctrine orm:generate-entities ./ --generate-annotations=true﻿
      *
      * путь в cli-config.php app/auth/Models/Doctrine
@@ -59,7 +59,7 @@ class LoginController extends AuthController
         $this->logout();
     }
 
-    protected function switchModel(string $driver, array $data): array
+    protected function switchModel(string $driver, array $data)
     {
         switch ($driver) {
             case 'pdo':
@@ -68,6 +68,7 @@ class LoginController extends AuthController
                 break;
             case 'doctrine':
                 $user = $this->model()->findOneByEmail($data['email']);
+                ddd($user);
                 break;
             case 'eloquent':
                 $user = Eloquent::find($data['email'])->first();
