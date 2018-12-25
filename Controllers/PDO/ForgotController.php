@@ -3,11 +3,13 @@
 namespace App\Auth\Controllers\PDO;
 
 use App\Auth\AuthController;
-use App\auth\Validations\ForgotValidation;
+use App\Auth\Helpers\AlertHelper;
+use App\Auth\Validations\ForgotValidation;
 
 class ForgotController extends AuthController
 {
 
+    use AlertHelper;
     use ForgotValidation;
 
     /**
@@ -32,7 +34,6 @@ class ForgotController extends AuthController
             $this->redirect('login');
         }
 
-        $this->validationErrors($this->validate);
-        $this->redirect('forgot');
+        $this->errorMessages('forgot');
     }
 }

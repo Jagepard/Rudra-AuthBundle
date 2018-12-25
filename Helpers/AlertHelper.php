@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Auth\Helpers;
 
 trait AlertHelper
@@ -32,9 +33,23 @@ trait AlertHelper
         $this->redirect('login');
     }
 
-    protected function errorMessages()
+    protected function errorMessages(string $target = 'login')
     {
         $this->validationErrors($this->validate);
-        $this->redirect('login');
+        $this->redirect($target);
+    }
+
+    protected function notAgree()
+    {
+        $this->setSession('alert', 'Вы не согласились с правилами ресурса', 'agree');
+        $this->redirect('register');
+    }
+
+    protected function alreadyExists(string $email)
+    {
+        if ($email) {
+            $this->setSession('alert', 'Пользователь с таким Email уже есть', 'unique');
+            $this->redirect('register');
+        }
     }
 }
