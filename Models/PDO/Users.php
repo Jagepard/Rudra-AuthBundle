@@ -11,7 +11,7 @@ class Users extends Model
     {
         $user = $this->db()->prepare('SELECT * FROM users WHERE `email` = :name');
         $user->execute([':name' => $name]);
-        $user = $user->fetch(\PDO::FETCH_ASSOC);
+        $user = $user->fetch(\PDO::FETCH_OBJ);
 
         return $user;
     }
