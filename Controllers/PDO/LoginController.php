@@ -3,7 +3,7 @@
 namespace App\Auth\Controllers\PDO;
 
 use App\Auth\AuthController;
-use App\auth\Helpers\AlertHelper;
+use App\Auth\Helpers\AlertHelper;
 use App\Auth\Validations\LoginValidation;
 
 class LoginController extends AuthController
