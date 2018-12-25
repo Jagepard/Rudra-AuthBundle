@@ -3,30 +3,22 @@
 namespace App\Auth\Controllers\PDO;
 
 use App\Auth\AuthController;
-use App\Auth\Models\Eloquent\Users as Eloquent;
+use App\auth\Helpers\AlertHelper;
+use App\Auth\Validations\LoginValidation;
 
 class LoginController extends AuthController
 {
 
+    use AlertHelper;
+    use LoginValidation;
+
     /**
      * @Routing(url = 'login')
      * @AfterMiddleware(name = 'UnsetSession')
-     *
-     * php vendor/bin/doctrine orm:convert-mapping --namespace="app\\auth\\Models\\Doctrine\\Entity\\" --force  --from-database annotation ./
-     * php vendor/bin/doctrine orm:generate-entities ./ --generate-annotations=true﻿
-     *
-     * путь в cli-config.php app/auth/Models/Doctrine
-     *
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
      */
     public function actionIndex()
     {
-        $this->twig('login', [
-            'title' => 'Авторизация',
-            'brand' => 'Авторизация'
-        ]);
+        $this->twig('login', ['title' => 'Авторизация', 'brand' => 'Авторизация']);
     }
 
     /**
@@ -34,21 +26,15 @@ class LoginController extends AuthController
      */
     public function actionLogin()
     {
-        $validate = [
-            'csrf_field' => $this->validation()->sanitize($this->post('csrf_field'))->csrf()->run(),
-            'email'      => $this->validation()->email($this->post('email'), 'Почта указана неверно')->run(),
-            'password'   => $this->validation()->sanitize($this->post('password'))
-                ->minLength(5, 'Пароль слишком мал')->maxLength(20, 'Пароль слишком большой')->run()
-        ];
+        $this->validate();
 
-        if ($this->validation()->access($validate)) {
-            $data = $this->validation()->get($validate, ['csrf_field']);
-            $user = $this->switchModel($this->container()->config('database', 'active'), $data);
-            $this->login($data['password'], $user, '');
+        if ($this->isValid) {
+            $user = $this->model()->getUser($this->validated['email']);
+            $this->notRegistered($user);
+            $this->login($this->validated['password'], $user->password, '');
         }
 
-        $this->validationErrors($validate);
-        $this->redirect('login');
+        $this->errorMessages();
     }
 
     /**
@@ -57,24 +43,5 @@ class LoginController extends AuthController
     public function actionLogout()
     {
         $this->logout();
-    }
-
-    protected function switchModel(string $driver, array $data)
-    {
-        switch ($driver) {
-            case 'pdo':
-                $user = $this->model()->getUser($data['email']);
-                $this->notRegistered($user);
-                break;
-            case 'doctrine':
-                $user = $this->model()->findOneByEmail($data['email']);
-                ddd($user);
-                break;
-            case 'eloquent':
-                $user = Eloquent::find($data['email'])->first();
-                break;
-        }
-
-        return $user;
     }
 }
