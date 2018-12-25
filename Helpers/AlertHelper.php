@@ -45,11 +45,23 @@ trait AlertHelper
         $this->redirect('register');
     }
 
-    protected function alreadyExists(string $email)
+    protected function alreadyExists($user)
     {
-        if ($email) {
+        if ($user) {
             $this->setSession('alert', 'Пользователь с таким Email уже есть', 'unique');
             $this->redirect('register');
         }
+    }
+
+    protected function emailVerification()
+    {
+        $this->setSession('alert', 'Данные добавлены', 'success');
+        $this->setSession('alert', 'Подтвердите почтовый адрес', 'info');
+    }
+
+    protected function sendLink()
+    {
+        $this->setSession('alert', 'Ссылка отправлена', 'success');
+        $this->setSession('alert', 'Перейдите по ссылке', 'info');
     }
 }

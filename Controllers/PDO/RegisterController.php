@@ -33,8 +33,13 @@ class RegisterController extends AuthController
             if ($this->isValid) {
                 $this->validated['password'] = $this->bcrypt($this->validated['password']);
                 $this->validated['activate'] = md5($this->randomString());
-                $this->alreadyExists($this->validated['email']);
+
+                $user = $this->model()->getUser($this->validated['email']);
+                $this->alreadyExists($user);
+
+                $this->model()->create($this->validated);
                 $this->sendMail($this->validated['email'], $this->validated['activate']);
+                $this->emailVerification();
                 $this->redirect('login');
             }
 

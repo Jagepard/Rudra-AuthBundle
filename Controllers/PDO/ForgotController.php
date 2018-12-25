@@ -28,9 +28,12 @@ class ForgotController extends AuthController
         $this->validate();
 
         if ($this->isValid) {
+            $user = $this->model()->getUser($this->validated['email']);
+            $this->notRegistered($user);
             $this->validated['activate'] = md5($this->randomString());
             $this->model()->updateActivate($this->validated);
             $this->sendMail($this->validated['email'], $this->validated['activate'], 1);
+            $this->sendLink();
             $this->redirect('login');
         }
 

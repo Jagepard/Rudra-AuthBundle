@@ -41,6 +41,7 @@ class ResetController extends AuthController
 
             if ($this->validated['md5'] == $user->activate) {
                 $this->model()->updatePassword($this->validated);
+                $this->sendLink();
                 $this->setSession('alert', 'Пароль изменен', 'success');
                 $this->redirect('login');
             }
