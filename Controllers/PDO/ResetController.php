@@ -3,9 +3,14 @@
 namespace App\Auth\Controllers\PDO;
 
 use App\Auth\AuthController;
+use App\Auth\Helpers\AlertHelper;
+use App\Auth\Validations\ResetValidation;
 
 class ResetController extends AuthController
 {
+
+    use AlertHelper;
+    use ResetValidation;
 
     /**
      * @Routing(url = 'reset/{email}/{md5}')
@@ -28,28 +33,19 @@ class ResetController extends AuthController
      */
     public function actionReset()
     {
-        $validate = [
-            'csrf_field' => $this->validation()->sanitize($this->post('csrf_field'))->csrf()->run(),
-            'email'      => $this->validation()->email($this->post('email'), 'Почта указана неверно')->run(),
-            'md5'        => $this->validation()->sanitize($this->post('hash'))->required('Заполните пароль')->run(),
-            'password'   => $this->validation()
-                ->sanitize($this->post('password'))
-                ->minLength(5, 'Пароль слишком мал')->maxLength(20, 'Пароль слишком большой')->run()
-        ];
+        $this->validate();
 
-        if ($this->validation()->access($validate)) {
-            $res             = $this->validation()->get($validate, ['csrf_field']);
-            $res['password'] = $this->bcrypt($res['password']);
-            $user            = $this->model()->getUser($res['email']);
+        if ($this->isValid) {
+            $this->validated['password'] = $this->bcrypt($this->validated['password']);
+            $user                        = $this->model()->getUser($this->validated['email']);
 
-            if ($res['md5'] == $user['activate']) {
-                $this->model()->updatePassword($res);
+            if ($this->validated['md5'] == $user->activate) {
+                $this->model()->updatePassword($this->validated);
                 $this->setSession('alert', 'Пароль изменен', 'success');
                 $this->redirect('login');
             }
         }
 
-        $this->validationErrors($validate);
-        $this->redirect('login');
+        $this->errorMessages();
     }
 }
