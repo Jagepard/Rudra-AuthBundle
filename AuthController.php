@@ -3,17 +3,17 @@
 namespace App\Auth;
 
 use Rudra\Controller;
-use App\Web\Supports\TwigFunctions;
-use Rudra\Interfaces\ContainerInterface;
 use App\Web\Supports\CommonHelper;
+use App\Web\Supports\TwigFunctions;
 use App\Auth\Models\PDO\Users as PDO;
+use Rudra\Interfaces\ContainerInterface;
 use App\Auth\Models\Doctrine\Entity\Users as Doctrine;
 
 class AuthController extends Controller
 {
 
-    use TwigFunctions;
     use CommonHelper;
+    use TwigFunctions;
 
     public function init(ContainerInterface $container, array $config)
     {
@@ -68,13 +68,5 @@ class AuthController extends Controller
         }
 
         return $str;
-    }
-
-    protected function notRegistered($user): void
-    {
-        if (!$user) {
-            $this->setSession('alert', 'Email не зарегистрирован', 'not-registered');
-            $this->redirect('login');
-        }
     }
 }
