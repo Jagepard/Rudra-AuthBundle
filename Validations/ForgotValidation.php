@@ -1,6 +1,6 @@
 <?php
 
-namespace App\auth\Validations;
+namespace App\Auth\Validations;
 
 trait ForgotValidation
 {
