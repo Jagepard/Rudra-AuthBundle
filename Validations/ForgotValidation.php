@@ -5,19 +5,20 @@ namespace App\auth\Validations;
 trait ForgotValidation
 {
 
-    protected function validate(string $key = 'access')
+    protected $isValid;
+    protected $validate;
+    protected $validated;
+
+    protected function validate(): void
     {
-        $validate = [
-            'csrf_field' => $this->validation()->sanitize($this->post('csrf_field'))->csrf()->run(),
-            'email'      => $this->validation()->email($this->post('email'))->run(),
-        ];
+        if (!isset($this->validate)) {
+            $this->validate = [
+                'csrf_field' => $this->validation()->sanitize($this->post('csrf_field'))->csrf()->run(),
+                'email'      => $this->validation()->email($this->post('email'))->run(),
+            ];
 
-        $result = [
-            'access' => $this->validation()->access($validate),
-            'data'   => $this->validation()->get($validate, ['csrf_field']),
-            'all'    => $validate
-        ];
-
-        return $result[$key];
+            $this->isValid   = $this->validation()->access($this->validate);
+            $this->validated = $this->validation()->get($this->validate, ['csrf_field']);
+        }
     }
 }

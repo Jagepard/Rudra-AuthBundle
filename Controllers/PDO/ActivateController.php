@@ -3,9 +3,12 @@
 namespace App\Auth\Controllers\PDO;
 
 use App\Auth\AuthController;
+use App\auth\Helpers\AlertHelper;
 
 class ActivateController extends AuthController
 {
+
+    use AlertHelper;
 
     /**
      * @Routing(url = 'activate/{email}/{md5}')
@@ -14,19 +17,13 @@ class ActivateController extends AuthController
     {
         $user = $this->model()->getUser($params['email']);
         $this->notRegistered($user);
+        $this->alreadyActivated($user);
 
-        if ($user['status'] == '1') {
-            $this->setSession('alert', 'Email уже активирован', 'info');
-            $this->redirect('login');
+        if ($params['md5'] == $user->activate) {
+            $this->model()->updateStatus($user->email);
+            $this->succeeded();
         }
 
-        if ($params['md5'] == $user['activate']) {
-            $this->model()->updateStatus($user['email']);
-            $this->setSession('alert', 'Email подтвержден', 'success');
-            $this->redirect('login');
-        }
-
-        $this->setSession('alert', 'Ссылка неверна', 'error');
-        $this->redirect('login');
+        $this->wrongLink();
     }
 }
