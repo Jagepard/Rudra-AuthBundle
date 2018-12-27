@@ -2,10 +2,18 @@
 
 namespace App\Auth\Models\PDO;
 
+use Rudra\Container;
 use Rudra\Model;
 
 class Users extends Model
 {
+
+    public static function user()
+    {
+        if (Container::$app->hasSession('user')) {
+            return (new self(Container::$app))->getUser(Container::$app->getSession('user'));
+        }
+    }
 
     public function getUser(string $name)
     {
