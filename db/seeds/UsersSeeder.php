@@ -20,9 +20,7 @@ class UsersSeeder extends AbstractSeed
             'name'       => 'Admin',
             'email'      => 'admin@admin.com',
             'password'   => '$2y$10$IgxFxFx5RLWmST9H6THQ/eCWT71mZgGwN.PeABJ0vHimQnrqyjAWS',
-            'status'     => 1,
             'role'       => 1,
-            'activate'   => null,
             'created_at' => Carbon::now(),
         ]);
     }

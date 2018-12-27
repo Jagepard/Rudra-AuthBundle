@@ -1,28 +1,27 @@
 {
-    "name"             : "rudra-bundle-jagepard/auth",
-    "description"      : "AuthBundle",
-    "type"             : "zend-module",
-    "license"          : "MIT",
-    "authors"          : [
+    "name"              : "rudra-bundle-jagepard/auth",
+    "description"       : "AuthBundle",
+    "type"              : "zend-module",
+    "license"           : "MIT",
+    "authors"           : [
         {
-            "name"    : "Danila Korotkov (Jagepard)",
-            "email"   : "jagepard@yandex.ru",
-            "homepage": "https://jagepard.ru",
-            "role"    : "Developer"
+            "name"     : "Danila Korotkov (Jagepard)",
+            "email"    : "jagepard@yandex.ru",
+            "homepage" : "https://jagepard.ru",
+            "role"     : "Developer"
         }
     ],
-    "support"          : {
-        "email": "jagepard@yandex.ru",
-        "skype": "jagepard.ru"
+    "support"           : {
+        "email" : "jagepard@yandex.ru",
+        "skype" : "jagepard.ru"
     },
-    "require"          : {
-        "php"                    : ">=7.1",
-        "composer/installers"    : "~1.0",
-        "swiftmailer/swiftmailer": "^6.0"
+    "require"           : {
+        "php"                : ">=7.1",
+        "composer/installers": "~1.0"
     },
-    "config"           : {
+    "config": {
         "optimize-autoloader": true
     },
     "minimum-stability": "dev",
-    "prefer-stable"    : true
+    "prefer-stable": true
 }

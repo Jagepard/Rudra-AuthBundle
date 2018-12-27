@@ -31,7 +31,9 @@ class LoginController extends AuthController
         if ($this->isValid) {
             $user = $this->model()->getUser($this->validated['email']);
             $this->notRegistered($user);
-            $this->login($this->validated['password'], $user->password, '');
+            $this->login(
+                $this->validated['password'], ['password' => $user->password, 'email' => $user->email], ''
+            );
         }
 
         $this->errorMessages();
