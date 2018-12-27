@@ -7,75 +7,69 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Users
  *
- * @ORM\Table(name="users", uniqueConstraints={@ORM\UniqueConstraint(name="users_email_unique", columns={"email"})})
- * @ORM\Entity
+ * @ORM\Table(name="users")
+ * @ORM\Entity()
  */
 class Users
 {
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer", precision=0, scale=0, nullable=false, options={"unsigned"=true}, unique=false)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @var int|null
-     *
-     * @ORM\Column(name="role_id", type="integer", precision=0, scale=0, nullable=true, unique=false)
-     */
-    private $roleId;
-
-    /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="name", type="string", length=255, nullable=false)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="string", length=255, precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="email", type="string", length=255, nullable=false)
      */
     private $email;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="avatar", type="string", length=255, precision=0, scale=0, nullable=true, options={"default"="users/default.png"}, unique=false)
-     */
-    private $avatar = 'users/default.png';
-
-    /**
      * @var string
      *
-     * @ORM\Column(name="password", type="string", length=255, precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="password", type="string", length=255, nullable=false)
      */
     private $password;
 
     /**
-     * @var string|null
+     * @var int
      *
-     * @ORM\Column(name="remember_token", type="string", length=100, precision=0, scale=0, nullable=true, unique=false)
+     * @ORM\Column(name="role", type="integer", nullable=false)
      */
-    private $rememberToken;
+    private $role;
 
     /**
-     * @var \DateTime|null
+     * @var string
      *
-     * @ORM\Column(name="created_at", type="datetime", precision=0, scale=0, nullable=true, unique=false)
+     * @ORM\Column(name="activate", type="string", length=255, nullable=false)
      */
-    private $createdAt;
+    private $activate;
 
     /**
-     * @var \DateTime|null
+     * @var int|null
      *
-     * @ORM\Column(name="updated_at", type="datetime", precision=0, scale=0, nullable=true, unique=false)
+     * @ORM\Column(name="status", type="integer", nullable=true)
      */
-    private $updatedAt;
+    private $status;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
+     */
+    private $createdAt = 'CURRENT_TIMESTAMP';
+
 
 
     /**
@@ -86,30 +80,6 @@ class Users
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set roleId.
-     *
-     * @param int|null $roleId
-     *
-     * @return Users
-     */
-    public function setRoleId($roleId = null)
-    {
-        $this->roleId = $roleId;
-
-        return $this;
-    }
-
-    /**
-     * Get roleId.
-     *
-     * @return int|null
-     */
-    public function getRoleId()
-    {
-        return $this->roleId;
     }
 
     /**
@@ -161,30 +131,6 @@ class Users
     }
 
     /**
-     * Set avatar.
-     *
-     * @param string|null $avatar
-     *
-     * @return Users
-     */
-    public function setAvatar($avatar = null)
-    {
-        $this->avatar = $avatar;
-
-        return $this;
-    }
-
-    /**
-     * Get avatar.
-     *
-     * @return string|null
-     */
-    public function getAvatar()
-    {
-        return $this->avatar;
-    }
-
-    /**
      * Set password.
      *
      * @param string $password
@@ -209,37 +155,85 @@ class Users
     }
 
     /**
-     * Set rememberToken.
+     * Set role.
      *
-     * @param string|null $rememberToken
+     * @param int $role
      *
      * @return Users
      */
-    public function setRememberToken($rememberToken = null)
+    public function setRole($role)
     {
-        $this->rememberToken = $rememberToken;
+        $this->role = $role;
 
         return $this;
     }
 
     /**
-     * Get rememberToken.
+     * Get role.
      *
-     * @return string|null
+     * @return int
      */
-    public function getRememberToken()
+    public function getRole()
     {
-        return $this->rememberToken;
+        return $this->role;
+    }
+
+    /**
+     * Set activate.
+     *
+     * @param string $activate
+     *
+     * @return Users
+     */
+    public function setActivate($activate)
+    {
+        $this->activate = $activate;
+
+        return $this;
+    }
+
+    /**
+     * Get activate.
+     *
+     * @return string
+     */
+    public function getActivate()
+    {
+        return $this->activate;
+    }
+
+    /**
+     * Set status.
+     *
+     * @param int|null $status
+     *
+     * @return Users
+     */
+    public function setStatus($status = null)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status.
+     *
+     * @return int|null
+     */
+    public function getStatus()
+    {
+        return $this->status;
     }
 
     /**
      * Set createdAt.
      *
-     * @param \DateTime|null $createdAt
+     * @param \DateTime $createdAt
      *
      * @return Users
      */
-    public function setCreatedAt($createdAt = null)
+    public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
 
@@ -249,34 +243,10 @@ class Users
     /**
      * Get createdAt.
      *
-     * @return \DateTime|null
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
         return $this->createdAt;
-    }
-
-    /**
-     * Set updatedAt.
-     *
-     * @param \DateTime|null $updatedAt
-     *
-     * @return Users
-     */
-    public function setUpdatedAt($updatedAt = null)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt.
-     *
-     * @return \DateTime|null
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
     }
 }

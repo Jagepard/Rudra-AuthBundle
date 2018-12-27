@@ -3,17 +3,17 @@
 namespace App\Auth;
 
 use Rudra\Controller;
-use App\Web\Supports\CommonHelper;
 use App\Web\Supports\TwigFunctions;
-use App\Auth\Models\PDO\Users as PDO;
 use Rudra\Interfaces\ContainerInterface;
+use App\Web\Supports\CommonHelper;
+use App\Auth\Models\PDO\Users as PDO;
 use App\Auth\Models\Doctrine\Entity\Users as Doctrine;
 
 class AuthController extends Controller
 {
 
-    use CommonHelper;
     use TwigFunctions;
+    use CommonHelper;
 
     public function init(ContainerInterface $container, array $config)
     {
