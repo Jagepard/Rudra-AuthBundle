@@ -2,13 +2,11 @@
 
 namespace App\Auth\Middleware;
 
-use App\Auth\AuthMiddleware;
-
-class UnsetSession extends AuthMiddleware
+class UnsetSession
 {
     public function __invoke()
     {
-        $this->container()->unsetSession('value');
-        $this->container()->unsetSession('alert');
+        rudra()->unsetSession('value');
+        rudra()->unsetSession('alert');
     }
 }
