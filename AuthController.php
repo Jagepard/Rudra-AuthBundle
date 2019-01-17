@@ -3,26 +3,26 @@
 namespace App\Auth;
 
 use Rudra\Controller;
-use App\Web\Supports\TwigFunctions;
+use App\Common\CommonHelper;
+use App\Common\TwigFunctions;
 use Rudra\Interfaces\ContainerInterface;
-use App\Web\Supports\CommonHelper;
 use App\Auth\Models\PDO\Users as PDO;
 use App\Auth\Models\Doctrine\Entity\Users as Doctrine;
 
 class AuthController extends Controller
 {
 
-    use TwigFunctions;
     use CommonHelper;
+    use TwigFunctions;
 
     public function init(ContainerInterface $container, array $config)
     {
-        parent::init($container, $container->config('template', 'auth'));
+        parent::init($container, config('template', 'auth'));
     }
 
     public function before()
     {
-        switch ($this->container()->config('database', 'active')) {
+        switch (config('database', 'active')) {
             case 'pdo':
                 $this->setModel(PDO::class);
                 break;
