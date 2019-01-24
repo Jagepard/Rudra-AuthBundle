@@ -15,9 +15,9 @@ class AuthController extends Controller
     use CommonHelper;
     use TwigFunctions;
 
-    public function init(ContainerInterface $container, array $config)
+    public function init()
     {
-        parent::init($container, config('template', 'auth'));
+        $this->template(config('template', 'auth'));
     }
 
     public function before()
