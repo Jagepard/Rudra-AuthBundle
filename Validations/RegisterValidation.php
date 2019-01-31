@@ -27,4 +27,28 @@ trait RegisterValidation
             $this->validated = $this->validation()->get($this->validate, ['csrf_field']);
         }
     }
+
+    /**
+     * @return mixed
+     */
+    public function getIsValid()
+    {
+        return $this->isValid;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getValidate()
+    {
+        return $this->validate;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getValidated()
+    {
+        return $this->validated;
+    }
 }
